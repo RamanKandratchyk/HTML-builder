@@ -4,24 +4,13 @@ async function copyDir() {
     const path = require('path');
 
     try {
-        const files = await fs.readdir(path.join(__dirname, 'secret-folder'), { withFileTypes: true });
-        // console.log(files);
-        for (const file of files) {
-            // console.log(file.name);
-            // console.log(file.isDirectory());
+        const filesCopyDir = await fs.mkdir(path.join(__dirname, 'files-copy'), { recursive: true });
 
-            let fileObj = path.parse(path.join(__dirname, 'secret-folder', `${file.name}`));
-            // console.log(fileObj);
-
-            let statFile = await fs.stat(path.join(__dirname, 'secret-folder', `${file.name}`));
-            // console.log(statFile);
-            let sizeInKb = (statFile.size / 1024).toFixed(3);
-
-            if (!file.isDirectory()) {
-                console.log(`${fileObj.name} - ${fileObj.ext.slice(1)} - ${sizeInKb} Kb`);
-                console.log('******************************************');
-            }
-        };
+        const sourceFiles = await fs.readdir(path.join(__dirname, 'files'), { withFileTypes: true });
+        for (const file of sourceFiles) {
+            console.log(file);
+            await fs.copyFile(path.join(__dirname, 'files', `${file.name}`), path.join(__dirname, 'files-copy', `${file.name}`));
+        }
     } catch (err) {
         console.error(err);
     }
