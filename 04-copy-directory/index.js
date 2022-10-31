@@ -1,7 +1,15 @@
 async function copyDir() {
-
     const fs = require('fs/promises');
     const path = require('path');
+    const constants = require('fs');
+
+    try {
+        await fs.access(path.join(__dirname, 'files-copy'), constants.F_OK);
+        // console.log("Файл найден");
+        const delDir = await fs.rm(path.join(__dirname, 'files-copy'), { recursive: true });
+    } catch (err) {
+        // console.error(err);
+    }
 
     try {
         const filesCopyDir = await fs.mkdir(path.join(__dirname, 'files-copy'), { recursive: true });
