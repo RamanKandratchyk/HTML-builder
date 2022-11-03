@@ -45,7 +45,6 @@ async function buildPage() {
       function (error, data) {
         if (error) throw error;
         templateStr = data;
-        // console.log('template111: ', templateStr);
       }
     );
   } catch (err) {
@@ -84,7 +83,6 @@ async function buildPage() {
             }
 
             console.log('templateStr was modified');
-            // console.log(templateStr);
             console.log('****************************************************');
           }
         );
@@ -105,7 +103,6 @@ async function buildPage() {
       // console.log(fileObj);
 
       if (!file.isDirectory() && fileObj.ext === '.css') {
-        // console.log(`${fileObj.name} - ${fileObj.ext.slice(1)} - ${fileObj.root}`);
         console.log(file);
 
         fs.readFile(path.join(__dirname, 'styles', `${file.name}`), "utf8",
