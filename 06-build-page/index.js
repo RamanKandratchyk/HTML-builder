@@ -61,7 +61,7 @@ async function buildPage() {
 
       if (!file.isDirectory() && fileObj.ext === '.html') {
 
-        console.log(fileObj.name);
+        // console.log(fileObj.name);
 
         fs.readFile(path.join(__dirname, 'components', `${file.name}`), "utf8",
           function (error, data) {
@@ -130,17 +130,22 @@ async function buildPage() {
   }
 
 
-  try {
-    const filesCopyDir = await fsProm.mkdir(path.join(__dirname, 'project-dist', 'assets'), { recursive: true });
-
-    const sourceFiles = await fsProm.readdir(path.join(__dirname, 'assets'), { withFileTypes: true });
-    for (const file of sourceFiles) {
-      console.log(file);
-      await fsProm.copyFile(path.join(__dirname, 'assets', `${file.name}`), path.join(__dirname, 'project-dist', 'assets', `${file.name}`));
+  async function copyDir(src, dest) {
+    const entries = await fsProm.readdir(src, { withFileTypes: true });
+    await fsProm.mkdir(dest);
+    for (let entry of entries) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(dest, entry.name);
+      if (entry.isDirectory()) {
+        await copyDir(srcPath, destPath);
+      } else {
+        await fsProm.copyFile(srcPath, destPath);
+      }
     }
-  } catch (err) {
-    console.error(err);
+    console.log(`Directory "${src}" was successfully copied`);
   }
+
+  copyDir(path.join(__dirname, 'assets'), path.join(__dirname, 'project-dist', 'assets'));
 
 }
 
