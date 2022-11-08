@@ -28,4 +28,4 @@ async function readFilesInfo() {
 
 }
 
-module.exports = readFilesInfo;
+readFilesInfo();

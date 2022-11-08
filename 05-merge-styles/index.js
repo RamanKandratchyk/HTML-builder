@@ -55,4 +55,4 @@ async function mergeStyles() {
 
 }
 
-module.exports = mergeStyles;
+mergeStyles();

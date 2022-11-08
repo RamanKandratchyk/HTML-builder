@@ -25,4 +25,4 @@ async function copyDir() {
 
 }
 
-module.exports = copyDir;
+copyDir();

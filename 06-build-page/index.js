@@ -146,4 +146,4 @@ async function buildPage() {
 
 }
 
-module.exports = buildPage;
+buildPage();

@@ -1,50 +1,44 @@
-function writeFile() {
+const fs = require('fs');
+const path = require('path');
+const { stdin, stdout } = process;
 
-  const fs = require('fs');
-  const path = require('path');
-  const { stdin, stdout } = process;
+fs.open(
+  path.join(__dirname, 'text.txt'),
+  'w',
+  (err) => {
+    if (err) throw err;
+    // console.log('File created');
+  }
+);
 
-  fs.open(
-    path.join(__dirname, 'text.txt'),
-    'w',
-    (err) => {
-      if (err) throw err;
-      // console.log('File created');
-    }
-  );
+stdout.write('Введите текст для записи:\n');
 
-  stdout.write('Введите текст для записи:\n');
+stdin.on('data', data => {
 
-  stdin.on('data', data => {
+  let dataStr = data.toString();
+  // stdout.write(dataStr);
+  // console.log(dataStr.length);
 
-    let dataStr = data.toString();
-    // stdout.write(dataStr);
-    // console.log(dataStr.length);
-
-    if (dataStr.length === 6 && dataStr.slice(0, 4) === 'exit') {
-      stdout.write('Введен exit\n');
-      process.exit();
-    } else {
-      fs.appendFile(
-        path.join(__dirname, 'text.txt'),
-        `${data}`,
-        err => {
-          if (err) throw err;
-          console.log('Файл был изменен');
-        }
-      );
-    }
-
-  });
-
-  process.on('SIGINT', () => {
+  if (dataStr.length === 6 && dataStr.slice(0, 4) === 'exit') {
+    stdout.write('Введен exit\n');
     process.exit();
-  });
+  } else {
+    fs.appendFile(
+      path.join(__dirname, 'text.txt'),
+      `${data}`,
+      err => {
+        if (err) throw err;
+        console.log('Файл был изменен');
+      }
+    );
+  }
 
-  process.on('exit', () => {
-    stdout.write('Процесс завершён. До скорого.');
-  });
+});
 
-}
+process.on('SIGINT', () => {
+  process.exit();
+});
 
-module.exports = writeFile;
+process.on('exit', () => {
+  stdout.write('Процесс завершён. До скорого.');
+});
