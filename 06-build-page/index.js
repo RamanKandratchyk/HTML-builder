@@ -129,7 +129,7 @@ async function buildPage() {
 
   async function copyDir(src, dest) {
     const entries = await fsProm.readdir(src, { withFileTypes: true });
-    await fsProm.mkdir(dest);
+    await fsProm.mkdir(dest, { recursive: true });
     for (let entry of entries) {
       const srcPath = path.join(src, entry.name);
       const destPath = path.join(dest, entry.name);
